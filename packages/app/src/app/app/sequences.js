@@ -16,10 +16,10 @@ export const loadApp = [
   },
 ];
 
-export const unloadApp = actions.stopListeningToConnectionChange;
-
-export const setConnection = set(state`connected`, props`connection`);
+export const setConnection = set(state`connection`, props`connection`);
 
 export const showAuthenticationError = [];
 
-export const openModal = [set(state`currentModal`, props`modal`)];
+export const unloadApp = actions.stopListeningToConnectionChange;
+
+export const openModal = set(state`currentModal`, props`modal`);
