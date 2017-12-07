@@ -61,6 +61,9 @@ class SandboxPage extends React.PureComponent<Props, State> {
   }
 
   fetchSandbox = (id: string) => {
+    this.props.signals.editor.sandboxChanged({
+      id: this.props.match.params.id,
+    });
     this.setState({ loading: true }, () => {
       this.props.signals.editor.sandboxChanged({
         id: this.props.match.params.id,
