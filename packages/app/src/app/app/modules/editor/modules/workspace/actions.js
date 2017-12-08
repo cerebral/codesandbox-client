@@ -37,6 +37,7 @@ export function removeTagFromState({ props, state }) {
   const sandboxId = state.get('editor.currentId');
   const tags = state.get(`editor.sandboxes.${sandboxId}.tags`);
   const index = tags.indexOf(tag);
+
   state.splice(`editor.sandboxes.${sandboxId}.tags`, index, 1);
 
   return { tag };
