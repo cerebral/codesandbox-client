@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { set, toggle, push } from 'cerebral/operators';
 import { state, props } from 'cerebral/tags';
 import * as actions from './actions';
@@ -19,6 +20,11 @@ export const updateSandboxInfo = [
   ),
   actions.updateSandbox,
 ];
+=======
+<<<<<<< HEAD
+import { set, toggle } from 'cerebral/operators';
+import { state } from 'cerebral/tags';
+>>>>>>> Refactored Project
 
 export const toggleWorkspace = toggle(
   state`editor.workspace.isWorkspaceHidden`
@@ -28,6 +34,7 @@ export const addNpmDependency = [
   ensureOwnedSandbox,
   set(state`editor.workspace.isProcessingDependencies`, true),
   actions.addNpmDependency,
+<<<<<<< HEAD
   set(
     state`editor.sandboxes.${state`editor.currentId`}.npmDependencies`,
     props`npmDependencies`
@@ -85,4 +92,18 @@ export const removeTag = [
   actions.removeTagFromState,
   actions.removeTag,
   set(state`editor.sandboxes.${state`editor.currentId`}.tags`, props`tags`),
+=======
+=======
+import { state, props } from 'cerebral/tags';
+import { set } from 'cerebral/operators';
+
+export const changeValue = [
+  set(state`editor.workspace.project.${props`field`}`, props`value`),
+];
+
+export const updateSandboxInfo = [
+  set(state`editor.workspace.project.title`, props`title`),
+  set(state`editor.workspace.project.description`, props`description`),
+>>>>>>> Refactored Project
+>>>>>>> Refactored Project
 ];
