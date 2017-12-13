@@ -2,6 +2,8 @@ import { types } from 'mobx-state-tree';
 
 export default {
   jwt: types.maybe(types.string),
+  authToken: types.maybe(types.string),
+  error: types.maybe(types.string),
   user: types.model({
     avatarUrl: types.maybe(types.string),
     badges: types.array(
@@ -40,5 +42,6 @@ export default {
       title: types.string,
     })
   ),
+  isLoadingCLI: types.boolean,
   currentModal: types.maybe(types.string),
 };

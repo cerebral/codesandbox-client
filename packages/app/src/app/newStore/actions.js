@@ -38,3 +38,10 @@ export function setPatronPrice({ props, state }) {
     props.user.subscription ? props.user.subscription.amount : 10
   );
 }
+
+export function getAuthToken({ api, path }) {
+  return api
+    .get('/auth/auth-token')
+    .then(token => path.success({ token }))
+    .catch(error => path.error({ error }));
+}

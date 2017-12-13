@@ -22,6 +22,8 @@ export default Module({
   model,
   state: {
     jwt: null,
+    authToken: null,
+    error: null,
     user: {
       id: null,
       email: null,
@@ -38,6 +40,7 @@ export default Module({
     connected: true,
     notifications: [],
     currentModal: null,
+    isLoadingCLI: false,
   },
   getters: {
     isPatron,
@@ -51,6 +54,8 @@ export default Module({
     modalClosed: sequences.closeModal,
     signInClicked: sequences.signIn,
     notificationRemoved: sequences.removeNotification,
+    authTokenRequested: sequences.getAuthToken,
+    requestAuthorisation: sequences.authorise,
   },
   catch: [[errors.AuthenticationError, sequences.showAuthenticationError]],
   modules: {

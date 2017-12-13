@@ -29,3 +29,12 @@ export const closeModal = set(state`currentModal`, null);
 export const signIn = [];
 
 export const removeNotification = actions.removeNotification;
+
+export const getAuthToken = [actions.getAuthToken];
+export const authorise = [
+  actions.getAuthToken,
+  {
+    success: [set(state`authToken`, props`token`)],
+    error: [set(state`editor.error`, props`error.message`)],
+  },
+];
