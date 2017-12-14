@@ -1,6 +1,7 @@
 import { when, set } from 'cerebral/operators';
 import { state, props } from 'cerebral/tags';
 import * as actions from './actions';
+import { addNotification } from './factories';
 
 export const loadApp = [
   actions.setJwtFromStorage,
@@ -38,3 +39,15 @@ export const authorise = [
     error: [set(state`editor.error`, props`error.message`)],
   },
 ];
+
+export const signInGithub = [
+  set(state`loading`, true),
+  actions.siginInGithub,
+  {
+    success: [set(state`jwt`, props`jwt`)],
+    error: [addNotification('Github Authentucation Error', 'error')],
+  },
+  set(state`isLoadingGithub`, false),
+];
+
+export const signOutGithub = [actions.signOutGithub, set(state`jwt`, null)];

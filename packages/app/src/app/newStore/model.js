@@ -43,5 +43,6 @@ export default {
     })
   ),
   isLoadingCLI: types.boolean,
+  isLoadingGithub: types.boolean,
   currentModal: types.maybe(types.string),
 };

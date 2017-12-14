@@ -41,6 +41,7 @@ export default Module({
     notifications: [],
     currentModal: null,
     isLoadingCLI: false,
+    isLoadingGithub: false,
   },
   getters: {
     isPatron,
@@ -56,6 +57,8 @@ export default Module({
     notificationRemoved: sequences.removeNotification,
     authTokenRequested: sequences.getAuthToken,
     requestAuthorisation: sequences.authorise,
+    signInGithubClicked: sequences.signInGithub,
+    signOutGithubClicked: sequences.signOutGithub,
   },
   catch: [[errors.AuthenticationError, sequences.showAuthenticationError]],
   modules: {

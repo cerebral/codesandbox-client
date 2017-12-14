@@ -1,4 +1,5 @@
 import * as errors from './errors';
+import { signInUrl, signInZeitUrl } from 'common/utils/url-generator';
 
 export function removeNotification({ state, props }) {
   const notifications = state.get('notifications');
@@ -44,4 +45,24 @@ export function getAuthToken({ api, path }) {
     .get('/auth/auth-token')
     .then(token => path.success({ token }))
     .catch(error => path.error({ error }));
+}
+
+export function siginInGithub({ browser, path, props }) {
+  const { useExtraScopes } = props;
+  const popup = browser.openPopup(signInUrl(useExtraScopes), 'sign in');
+  browser.addEventListener('message', function onMessage(e) {
+    if (event.data.type === 'signin') {
+      const jwt = e.data.data.jwt;
+      window.removeEventListener('message', this);
+      popup.close();
+      if (jwt) {
+        return path.success({ jwt });
+      }
+      return path.error();
+    }
+  });
+}
+
+export function signOutGithub({ api }) {
+  return api.delete(`/users/current_user/integrations/github`);
 }
