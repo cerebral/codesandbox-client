@@ -6,14 +6,11 @@ import { camelizeKeys } from 'humps';
 import type { Sandbox } from 'common/types';
 import getTemplateDefinition from 'common/templates';
 import Centered from 'common/components/flex/Centered';
-import Title from 'app/components/text/Title';
-import SubTitle from 'app/components/text/SubTitle';
+import Title from 'app/components/Title';
+import SubTitle from 'app/components/SubTitle';
 import { getSandboxOptions } from 'common/url';
 
-import {
-  findCurrentModule,
-  findMainModule,
-} from 'app/store/entities/sandboxes/modules/selectors';
+import { findCurrentModule, findMainModule } from 'common/sandbox/modules';
 
 import Header from './components/Header';
 import Content from './components/Content';
