@@ -219,6 +219,7 @@ export default class Content extends React.PureComponent {
       hideNavigation,
       isInProjectView,
       editorSize,
+      highlightedLines,
       expandDevTools,
     } = this.props;
 
@@ -273,6 +274,7 @@ export default class Content extends React.PureComponent {
               settings={this.getPreferences()}
               dependencies={sandbox.npmDependencies}
               canSave={false}
+              highlightedLines={highlightedLines}
               hideNavigation={hideNavigation}
               onChange={this.setCode}
               onModuleChange={this.setCurrentModule}

@@ -273,6 +273,16 @@ class CodemirrorEditor extends React.Component {
 
     this.codemirror = getCodeMirror(el, documentCache[id]);
 
+    if (this.props.highlightedLines) {
+      this.props.highlightedLines.forEach(line => {
+        this.codemirror.addLineClass(
+          +line - 1,
+          'background',
+          'cm-line-highlight'
+        );
+      });
+    }
+
     this.codemirror.on('change', this.handleChange);
     this.changeSettings(this.settings);
   };
