@@ -4,6 +4,7 @@ const paths = require('./paths');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HappyPack = require('happypack');
 const WatchMissingNodeModulesPlugin = require('../scripts/utils/WatchMissingNodeModulesPlugin');
 const env = require('./env');
@@ -29,7 +30,7 @@ module.exports = {
     : {
         app: [
           require.resolve('./polyfills'),
-          path.join(paths.appSrc, 'index.js'),
+          path.join(paths.appSrc, 'index.tsx'),
         ],
         sandbox: [
           require.resolve('./polyfills'),
@@ -66,6 +67,13 @@ module.exports = {
           new RegExp('babel-runtime\\' + path.sep),
         ],
         loader: 'happypack/loader',
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true, // IMPORTANT! use transpileOnly mode to speed-up compilation
+        },
       },
       // JSON is not enabled by default in Webpack but both Node and Browserify
       // allow it implicitly so we also enable it.
@@ -130,7 +138,7 @@ module.exports = {
     mainFields: ['browser', 'module', 'jsnext:main', 'main'],
     modules: ['node_modules', 'src', 'standalone-packages'],
 
-    extensions: ['.js', '.json'],
+    extensions: ['ts', 'tsx', '.js', '.json'],
 
     alias: {
       moment: 'moment/moment.js',
@@ -280,5 +288,6 @@ module.exports = {
       minChunks: 2,
     }),
     new webpack.NamedModulesPlugin(),
+    new ForkTsCheckerWebpackPlugin(),
   ],
 };

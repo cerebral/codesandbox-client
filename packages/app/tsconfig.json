@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "app/*": ["src/app/*"],
+      "common/*": ["../common/*"]
+    },
+    "outDir": "build/dist",
+    "module": "esnext",
+    "target": "es5",
+    "sourceMap": true,
+    "allowJs": true,
+    "strict": true,
+    "jsx": "react",
+    "rootDir": "src",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": false,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true
+  },
+  "exclude": ["node_modules"]
+}
