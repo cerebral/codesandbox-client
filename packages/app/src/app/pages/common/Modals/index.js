@@ -68,7 +68,7 @@ function Modals({ store, signals }) {
     <Modal
       isOpen={Boolean(modal)}
       width={modal && modal.width}
-      onClose={(isKeyDown: boolean) => signals.modalClosed({ isKeyDown })}
+      onClose={isKeyDown => signals.modalClosed({ isKeyDown })}
     >
       {modal ? React.createElement(modal.Component) : null}
     </Modal>

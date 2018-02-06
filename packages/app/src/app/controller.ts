@@ -1,5 +1,5 @@
-import { Controller } from '@cerebral/mobx-state-tree';
-import store from './store';
+import { Controller } from '@cerebral/fluent';
+import * as store from './store';
 
 let Devtools = null;
 
@@ -7,7 +7,9 @@ if (process.env.NODE_ENV !== 'production') {
   Devtools = require('cerebral/devtools').default; // eslint-disable-line
 }
 
-export default Controller(store, {
+console.log('wuuuut?')
+
+export default Controller(store.module, {
   devtools:
     Devtools &&
     Devtools({

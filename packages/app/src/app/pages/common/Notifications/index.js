@@ -57,6 +57,7 @@ class Notifications extends React.Component {
   interval: number;
 
   render() {
+    console.log(this.props.store);
     const notifications = this.props.store.notifications;
 
     return (

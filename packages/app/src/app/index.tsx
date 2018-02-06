@@ -1,9 +1,13 @@
-import React from 'react';
+declare var Raven: {
+  config(url: string, options: {})
+}
+declare var VERSION: string
+
+import * as React from 'react';
 import { render } from 'react-dom';
 import { ThemeProvider } from 'styled-components';
 import { Router } from 'react-router-dom';
 import history from './utils/history';
-import VERSION from 'common/version';
 import registerServiceWorker from 'common/registerServiceWorker';
 import requirePolyfills from 'common/load-dynamic-polyfills';
 import 'normalize.css';
@@ -16,7 +20,6 @@ import App from './pages/index';
 import './split-pane.css';
 import logError from './utils/error';
 
-/*
 if (process.env.NODE_ENV === 'production') {
   try {
     Raven.config('https://3943f94c73b44cf5bb2302a72d52e7b8@sentry.io/155188', {
@@ -67,10 +70,9 @@ if (process.env.NODE_ENV === 'production') {
     console.error(error);
   }
 }
-*/
 
 requirePolyfills()
-  .then((polyfill: any) => {
+  .then(() => {
     const rootEl = document.getElementById('root');
 
   const showNotification = (message, type) =>
@@ -83,7 +85,7 @@ requirePolyfills()
 
   try {
     render(
-      <Provider {...controller.provide()}>
+      <Provider store={controller.state} signals={controller.signals}>
         <ThemeProvider theme={theme}>
           <Router history={history}>
             <App />

@@ -9,7 +9,7 @@ import Badge from './Badge';
 import { Container, Details } from './elements';
 
 function PricingModal({ store }) {
-  const badge = `patron-${store.patron.tier}`;
+  const badge = `patron-${store.patron.tier.get()}`;
 
   return (
     <Container>
