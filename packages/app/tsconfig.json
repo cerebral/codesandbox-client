@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "lib": ["es2015", "dom"],
+    "baseUrl": "./src/app",
+    "paths": {
+      "fluent": ["fluent"] // This mapping is relative to "baseUrl"
+    },
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",

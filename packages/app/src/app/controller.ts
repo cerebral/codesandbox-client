@@ -7,8 +7,6 @@ if (process.env.NODE_ENV !== 'production') {
   Devtools = require('cerebral/devtools').default; // eslint-disable-line
 }
 
-console.log('wuuuut?')
-
 export default Controller(store.module, {
   devtools:
     Devtools &&
