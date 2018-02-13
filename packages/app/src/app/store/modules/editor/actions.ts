@@ -62,11 +62,16 @@ export function setModuleSaved({ props, state }: Context<any>) {
 	state.editor.changedModuleShortids.splice(indexToRemove, 1);
 }
 
-export function ensureValidPrivacy({ props, path }: BranchContext<{
-  valid: {},
-  invalid: {}
-}, any>
-}) {
+export function ensureValidPrivacy({
+	props,
+	path
+}: BranchContext<
+	{
+		valid: {};
+		invalid: {};
+	},
+	any
+>) {
 	const privacy = Number(props.privacy);
 
 	return Number.isNaN(privacy) ? path.invalid({}) : path.valid({ privacy });

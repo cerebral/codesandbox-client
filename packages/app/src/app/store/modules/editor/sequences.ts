@@ -1,4 +1,4 @@
-import { sequence } from 'fluent';
+import { sequence, sequenceWithProps } from 'fluent';
 import * as actions from './actions';
 import { closeTabByIndex } from '../../actions';
 import { ensureOwnedSandbox, forkSandbox, fetchGitChanges, closeModal } from '../../sequences';
@@ -78,121 +78,125 @@ export const updatePrivacy = sequence((s) =>
 	})
 );
 
-export const toggleLikeSandbox = sequence((s) => s.action())[
-	(when(state`editor.sandboxes.${props`id`}.userLiked`),
-	{
-		true: [ actions.unlikeSandbox, increment(state`editor.sandboxes.${props`id`}.likeCount`, -1) ],
-		false: [ actions.likeSandbox, increment(state`editor.sandboxes.${props`id`}.likeCount`, 1) ]
-	},
-	toggle(state`editor.sandboxes.${props`id`}.userLiked`))
-];
+export const toggleLikeSandbox = sequenceWithProps<{ id: string }>((s) =>
+	s
+		.when(({ state, props }) => state.editor.sandboxes.get(props.id).userLiked)
+		.paths({
+			true: (s) =>
+				s.action(actions.unlikeSandbox).action(({ state, props }) => {
+					state.editor.sandboxes.get(props.id).likeCount -= 1;
+				}),
+			false: (s) =>
+				s.action(actions.likeSandbox).action(({ state, props }) => {
+					state.editor.sandboxes.get(props.id).likeCount += 1;
+				})
+		})
+		.action(({ state, props }) => {
+			state.editor.sandboxes.get(props.id).userLiked = !state.editor.sandboxes.get(props.id).userLiked;
+		})
+);
+export const forceForkSandbox = sequence((s) =>
+	s.when(({ state }) => state.editor.currentSandbox.get().owned).paths({
+		true: (s) =>
+			s.branch(actions.confirmForkingOwnSandbox).paths({
+				confirmed: (s) => s.sequence(forkSandbox),
+				cancelled: (s) => s
+			}),
+		false: (s) => s.sequence(forkSandbox)
+	})
+);
 
-export const forceForkSandbox = [
-	when(state`editor.currentSandbox.owned`),
-	{
-		true: [
-			actions.confirmForkingOwnSandbox,
-			{
-				confirmed: forkSandbox,
-				cancelled: []
-			}
-		],
-		false: forkSandbox
-	}
-];
+export const changeCode = sequence((s) =>
+	s.action(actions.setCode).action(actions.addChangedModule).action(actions.unsetDirtyTab)
+);
 
-export const changeCode = [ actions.setCode, actions.addChangedModule, actions.unsetDirtyTab ];
+export const saveChangedModules = sequence((s) =>
+	s
+		.sequence(ensureOwnedSandbox)
+		.action(actions.outputChangedModules)
+		.action(actions.saveChangedModules)
+		.action(({ state }) => {
+			state.editor.changedModuleShortids = [];
+		})
+		.when(({ state }) => state.editor.currentSandbox.get().originalGit)
+		.paths({
+			true: (s) =>
+				s.when(({ state }) => state.workspace.openedWorkspaceItem === 'github').paths({
+					true: (s) => s.sequence(fetchGitChanges),
+					false: (s) => s
+				}),
+			false: (s) => s
+		})
+);
 
-export const saveChangedModules = [
-	ensureOwnedSandbox,
-	actions.outputChangedModules,
-	actions.saveChangedModules,
-	set(state`editor.changedModuleShortids`, []),
-	when(state`editor.currentSandbox.originalGit`),
-	{
-		true: [
-			when(state`workspace.openedWorkspaceItem`, (item) => item === 'github'),
-			{
-				true: fetchGitChanges,
-				false: []
-			}
-		],
-		false: []
-	}
-];
+export const saveCode = sequenceWithProps<{ code?: string }>((s) =>
+	s
+		.sequence(ensureOwnedSandbox)
+		.when(({ props }) => props.code)
+		.paths({
+			true: (s) => s.action(actions.setCode),
+			false: (s) => s
+		})
+		.when(({ state }) => state.preferences.settings.prettifyOnSaveEnabled)
+		.paths({
+			true: (s) =>
+				s.branch(actions.prettifyCode).paths({
+					success: (s) => s.action(actions.setCode),
+					error: (s) => s
+				}),
+			false: (s) => s
+		})
+		.action(actions.saveModuleCode)
+		.action(actions.setModuleSaved)
+		.when(({ state }) => state.editor.currentSandbox.get().originalGit)
+		.paths({
+			true: (s) =>
+				s.when(({ state }) => state.workspace.openedWorkspaceItem === 'github').paths({
+					true: (s) => s.seqeunce(fetchGitChanges),
+					false: (s) => s
+				}),
+			false: (s) => s
+		})
+);
 
-export const saveCode = [
-	ensureOwnedSandbox,
-	when(props`code`),
-	{
-		true: actions.setCode,
-		false: []
-	},
-	when(state`preferences.settings.prettifyOnSaveEnabled`),
-	{
-		true: [
-			actions.prettifyCode,
-			{
-				success: actions.setCode,
-				error: []
-			}
-		],
-		false: []
-	},
-	actions.saveModuleCode,
-	actions.setModuleSaved,
-	when(state`editor.currentSandbox.originalGit`),
-	{
-		true: [
-			when(state`workspace.openedWorkspaceItem`, (item) => item === 'github'),
-			{
-				true: fetchGitChanges,
-				false: []
-			}
-		],
-		false: []
-	}
-];
+export const addNpmDependency = sequence<{ version?: string }>((s) =>
+	s
+		.sequence(closeModal)
+		.sequence(ensureOwnedSandbox)
+		.when(({ props }) => props.version)
+		.paths({
+			true: (s) => s,
+			false: (s) => s.action(actions.getLatestVersion)
+		})
+		.action(actions.addNpmDependencyToPackage)
+		.sequence(saveCode)
+);
 
-export const addNpmDependency = [
-	closeModal,
-	ensureOwnedSandbox,
-	when(props`version`),
-	{
-		true: [],
-		false: [ actions.getLatestVersion ]
-	},
-	actions.addNpmDependencyToPackage,
-	saveCode
-];
+export const removeNpmDependency = sequence((s) =>
+	s.sequence(ensureOwnedSandbox).action(actions.removeNpmDependencyFromPackage).sequence(saveCode)
+);
 
-export const removeNpmDependency = [ ensureOwnedSandbox, actions.removeNpmDependencyFromPackage, saveCode ];
+export const updateSandboxPackage = sequence((s) => s.action(actions.updateSandboxPackage).sequence(saveCode));
 
-export const updateSandboxPackage = [ actions.updateSandboxPackage, saveCode ];
+export const handlePreviewAction = sequenceWithProps<{ action: any }>((s) =>
+	s.equals(({ props }) => props.action.action).paths({
+		notification: (s) => s.action(addNotification('BLAH', 'success')),
+		'show-error': (s) => s.action(actions.addErrorFromPreview),
+		'show-correction': (s) => s.action(actions.addCorrectionFromPreview),
+		'show-glyph': (s) => s.action(actions.addGlyphFromPreview),
+		'source.module.rename': (s) => s.action(actions.renameModuleFromPreview),
+		'source.dependencies.add': (s) =>
+			s
+				.action(({ state, props }) => ({ name: props.action.dependency }))
+				.sequence(addNpmDependency)
+				.action(actions.forceRender),
+		'editor.open-module': (s) =>
+			s.action(actions.outputModuleIdFromActionPath).when(({ props }) => props.id).paths({
+				true: (s) => s.action(setCurrentModule(({ props }) => props.id)),
+				false: (s) => s
+			}),
+		otherwise: (s) => s
+	})
+);
 
-export const handlePreviewAction = [
-	equals(props`action.action`),
-	{
-		notification: addNotification(props`action.title`, props`action.notificationType`, props`action.timeAlive`),
-		'show-error': actions.addErrorFromPreview,
-		'show-correction': actions.addCorrectionFromPreview,
-		'show-glyph': actions.addGlyphFromPreview,
-		'source.module.rename': actions.renameModuleFromPreview,
-		'source.dependencies.add': [
-			set(props`name`, props`action.dependency`),
-			addNpmDependency,
-			actions.forceRender
-		],
-		'editor.open-module': [
-			actions.outputModuleIdFromActionPath,
-			when(props`id`),
-			{
-				true: setCurrentModule(props`id`),
-				false: []
-			}
-		],
-		otherwise: []
-	}
-];
-
-export const setPreviewBounds = [ actions.setPreviewBounds ];
+export const setPreviewBounds = sequence((s) => s.action(actions.setPreviewBounds));

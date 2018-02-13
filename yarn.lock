@@ -24,16 +24,16 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@cerebral/fluent@1.0.0-1517876241663":
-  version "1.0.0-1517876241663"
-  resolved "https://registry.yarnpkg.com/@cerebral/fluent/-/fluent-1.0.0-1517876241663.tgz#4b0d2455582a1ad3246a712fe7c86b4ec1d88537"
+"@cerebral/fluent@1.0.0-1518417962068":
+  version "1.0.0-1518417962068"
+  resolved "https://registry.yarnpkg.com/@cerebral/fluent/-/fluent-1.0.0-1518417962068.tgz#b2b58cef4a484eda1450780e259daddb85c1d6c1"
   dependencies:
-    cerebral "^4.2.0-1517876241663"
+    cerebral "^4.2.0-1518417962068"
     mobx "^3.4.1"
 
-"@cerebral/http@4.2.0-1517876241663":
-  version "4.2.0-1517876241663"
-  resolved "https://registry.yarnpkg.com/@cerebral/http/-/http-4.2.0-1517876241663.tgz#461fe373c3508b5817dea299e101be17e9bb86dd"
+"@cerebral/http@4.2.0-1518417962068":
+  version "4.2.0-1518417962068"
+  resolved "https://registry.yarnpkg.com/@cerebral/http/-/http-4.2.0-1518417962068.tgz#b3156e2e3e24654d3ae7534bb0720bab53ed7721"
 
 "@emmetio/abbreviation@^0.6.0", "@emmetio/abbreviation@^0.6.1":
   version "0.6.4"
@@ -2744,12 +2744,12 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
-cerebral@4.2.0-1517876241663, cerebral@^4.2.0-1517876241663:
-  version "4.2.0-1517876241663"
-  resolved "https://registry.yarnpkg.com/cerebral/-/cerebral-4.2.0-1517876241663.tgz#54767018385f350746b33f7e6a1b99e84459c267"
+cerebral@4.2.0-1518417962068, cerebral@^4.2.0-1518417962068:
+  version "4.2.0-1518417962068"
+  resolved "https://registry.yarnpkg.com/cerebral/-/cerebral-4.2.0-1518417962068.tgz#900dbb107ec0cb7eee963889ebb0a78f254145d3"
   dependencies:
     es6-error "^4.0.2"
-    function-tree "^3.2.0-1517876241663"
+    function-tree "^3.2.0-1518417962068"
 
 chain-function@^1.0.0:
   version "1.0.0"
@@ -5887,9 +5887,9 @@ function-bind@^1.0.2, function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
 
-function-tree@^3.2.0-1517876241663:
-  version "3.2.0-1517876241663"
-  resolved "https://registry.yarnpkg.com/function-tree/-/function-tree-3.2.0-1517876241663.tgz#a3f00ea915c807e8dc03adce02628f983ae62d9b"
+function-tree@^3.2.0-1518417962068:
+  version "3.2.0-1518417962068"
+  resolved "https://registry.yarnpkg.com/function-tree/-/function-tree-3.2.0-1518417962068.tgz#0b6cfa382f04440dd80e2ab87d16fd8283a7323c"
   dependencies:
     "@types/eventemitter3" "^1.2.0"
     chalk "^1.1.3"

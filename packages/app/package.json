@@ -92,8 +92,8 @@
 		"worker-loader": "^0.8.1"
 	},
 	"dependencies": {
-		"@cerebral/http": "4.2.0-1517876241663",
-		"@cerebral/fluent": "1.0.0-1517876241663",
+		"@cerebral/fluent": "1.0.0-1518417962068",
+		"@cerebral/http": "4.2.0-1518417962068",
 		"@emmetio/codemirror-plugin": "^0.3.5",
 		"axios": "^0.16.2",
 		"babel-helper-vue-jsx-merge-props": "^2.0.2",
@@ -112,7 +112,7 @@
 		"babel-standalone": "^6.25.0",
 		"base64-loader": "^1.0.0",
 		"browser-resolve": "CompuIves/node-browser-resolve",
-		"cerebral": "4.2.0-1517876241663",
+		"cerebral": "4.2.0-1518417962068",
 		"circular-json": "^0.4.0",
 		"codemirror": "^5.27.4",
 		"codesandbox-api": "^0.0.14",
@@ -123,6 +123,7 @@
 		"downshift": "^1.0.0-rc.14",
 		"eslint-config-react-app": "^1.0.5",
 		"file-saver": "^1.3.3",
+		"function-tree": "^3.2.0-1518417962068",
 		"geniejs": "^0.5.0",
 		"glamor": "^2.20.25",
 		"gsap": "^1.20.3",

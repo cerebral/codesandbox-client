@@ -51,9 +51,9 @@ export function postToZeit({
 }: BranchContext<
 	{
 		success: { url: string };
-		error: { error: any };
+		error: { error: string };
 	},
-	{ apiData: any }
+	{ apiData: {} }
 >) {
 	const { apiData } = props;
 	const token = state.user.integrations.zeit.token;
